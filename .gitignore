@@ -1,0 +1,22 @@
+
+# Environnement virtuel Python
+venv/
+.venv/
+
+# Fichiers Python compilés
+__pycache__/
+*.pyc
+
+# Variables d'environnement (secrets)
+.env
+
+# Fichiers temporaires
+*.log
+*.tmp
+
+# Configuration d'un éditeur
+.vscode/
+.idea/
+
+# uv
+uv.lock

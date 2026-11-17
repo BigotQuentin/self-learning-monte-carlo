@@ -1,0 +1,16 @@
+[project]
+name = "self-learning-monte-carlo"
+version = "0.1.0"
+description = "Monte Carlo simulations and analysis for statistical physics"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "numpy",
+    "scipy",
+    "matplotlib",
+    "jupyterlab",
+    "ipykernel",
+]
+
+[tool.uv]
+package = false
