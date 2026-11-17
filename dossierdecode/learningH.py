@@ -6,7 +6,7 @@ def learningH(CaN, Ea) -> "list[float]":
     Expecting Ea to be a matrix of shape (n, 1) and CaN to be a matrix of shape (n, m)
     """
     ones = np.ones((CaN.shape[0], 1))
-    A = np.hstack((ones, CaN))
+    A = np.hstack((ones, -CaN))
     # Perform least squares fit
     H = np.linalg.lstsq(A, Ea, rcond=None)[0]
     return H.flatten().tolist()
@@ -18,7 +18,7 @@ def meanDifferenceH(CaN, Ea) -> float:
     """
     H = learningH(CaN, Ea)
     ones = np.ones((CaN.shape[0], 1))
-    A = np.hstack((ones, CaN))
+    A = np.hstack((ones, -CaN))
     Ea_predicted = A @ H
     difference = np.mean(np.abs(Ea - Ea_predicted))
     return difference
