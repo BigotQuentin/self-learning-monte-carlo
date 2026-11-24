@@ -46,10 +46,11 @@ def metropolis_hastings_wolff(energy_H, delta_energy_H, delta_energy_Heff, J_eff
     def run(n_moves):
         for _ in range(n_moves):
             mask = to_mask(wolff(Spins, J_eff, beta))
-            dE = delta_energy_H(Spins, mask) - delta_energy_Heff(Spins, mask)
+            dE = -delta_energy_H(Spins, mask) - delta_energy_Heff(Spins, mask) #- sign cause wolff flipped the cluster
             if dE <= 0 or rng.random() < math.exp(-beta * dE):
-                Spins[mask] *= -1                      # in place, no copy needed
-
+                Spins[mask] *= 1 #do nothing cause wolff already flipped the cluster                      # in place, no copy needed
+            else :
+                Spins[mask] *= -1 #flip it back if config not accepted
     run(n_warmup)
     configs = np.empty((n_configs, L, L), dtype=np.int8)
     energies = np.empty(n_configs)
