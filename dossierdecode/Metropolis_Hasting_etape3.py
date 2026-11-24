@@ -2,19 +2,12 @@ import math
 import numpy as np
 from wolff_algo import neighbor, wolff
 
-def ising_JK(J: float = 1.0, K: float = 0.2):
+def ising_JK(E0: int = 0.0, J: float = 1.0, K: float = 0.2):
     """H = -J sum_<ij> s_i s_j - K sum_plaquettes s_i s_j s_k s_l (periodic), as in the notebook.
     Returns (energy, delta_energy): total energy, and energy change when flipping s[i, j]."""
     def energy(s):
         r0, r1 = np.roll(s, -1, axis=0), np.roll(s, -1, axis=1)
-        return float(-J * np.sum(s * (r0 + r1)) - K * np.sum(s * r0 * r1 * np.roll(r0, -1, axis=1)))
-
-    def delta_energy(s, i, j):
-        L = s.shape[0]; ip, jp = (i + 1) % L, (j + 1) % L
-        dJ = s[i-1, j] + s[ip, j] + s[i, j-1] + s[i, jp]
-        dK = (s[i-1, j-1]*s[i-1, j]*s[i, j-1] + s[i-1, j]*s[i-1, jp]*s[i, jp]
-              + s[i, j-1]*s[ip, j-1]*s[ip, j] + s[i, jp]*s[ip, j]*s[ip, jp])
-        return float(2 * s[i, j] * (J * dJ + K * dK))
+        return E0 + float(-J * np.sum(s * (r0 + r1)) - K * np.sum(s * r0 * r1 * np.roll(r0, -1, axis=1)))
     
     def delta_energy_cluster(Spins, cluster):
         """Energy change when flipping all spins in `mask` (bool (L, L)), computed before the flip.
@@ -25,7 +18,7 @@ def ising_JK(J: float = 1.0, K: float = 0.2):
         dE_J = 2 * J * ((Spins * r0)[cluster ^ m0].sum() + (Spins * r1)[cluster ^ m1].sum())          # bonds on the cluster boundary
         plaquette = Spins * r0 * r1 * np.roll(r0, -1, axis=1)
         dE_K = 2 * K * plaquette[cluster ^ m0 ^ m1 ^ np.roll(m0, -1, axis=1)].sum()        # plaquettes cut an odd number of times
-        return float(dE_J + dE_K)
+        return E0 + float(dE_J + dE_K)
     return energy, delta_energy_cluster
 
 def metropolis_hastings_wolff(energy_H, delta_energy_H, delta_energy_Heff, J_eff,

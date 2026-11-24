@@ -1,4 +1,4 @@
-from learningH import learningH, meanDifferenceH
+from dossierdecode.learningH import learningH, meanDifferenceH
 from dossierdecode.Metropolis_Hasting_etape1 import ising_JK, metropolis_hastings
 import numpy as np
 
