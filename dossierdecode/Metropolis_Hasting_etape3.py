@@ -1,6 +1,6 @@
 import math
 import numpy as np
-from wolff_algo import neighbor, wolff
+from dossierdecode.wolff_algo import wolff
 
 def ising_JK(E0: int = 0.0, J: float = 1.0, K: float = 0.2):
     """H = -J sum_<ij> s_i s_j - K sum_plaquettes s_i s_j s_k s_l (periodic), as in the notebook.
